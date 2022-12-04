@@ -19,8 +19,6 @@ class CameraThread(QThread):
             if not ret:
                 pass
             color_frame = colorSelection(frame, self.lower, self.upper)
-            #color_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            #color_frame = cv2.inRange(color_frame, (self.lower,0,0), (self.upper,255,255))
 
             qformat = QImage.Format_Indexed8
             if len(color_frame.shape) == 3:  
