@@ -1,3 +1,5 @@
+## START RUNNING HERE ##
+
 import os
 import sys
 from pathlib import Path
