@@ -49,13 +49,14 @@ ApplicationWindow {
     RowLayout {
         anchors.top: feedImage.bottom
         anchors.horizontalCenter: feedImage.horizontalCenter
+        spacing: 15
 
         Button {
             id: btnStartCamera
             text: "Start Camera"
             onClicked: {
                 camProvider.start();
-                bwSwitch.enabled = true;
+                rangeSlider.enabled = true;
             }
         }
         
@@ -64,25 +65,48 @@ ApplicationWindow {
             text: "Stop Camera"
             onClicked: {
                 camProvider.stop()
-                bwSwitch.enabled = false;
+                rangeSlider.enabled = false;
              }
         }
+        RowLayout{
 
-        Switch {
-            id: bwSwitch
-            text: qsTr("Black and White")
-            font.pointSize: 9 
-            enabled: false                                
+            spacing:5
 
+            Text {
+                id: slider1
+                color: "white"
+                text: qsTr("0")
+            }
 
-            onClicked: {
-                if (bwSwitch.position == 1.0) {
-                    camProvider.bw(1)
-                    } else {
-                    camProvider.bw(0)
-                    }
+            RangeSlider {
+                id:rangeSlider
+                from: 1
+                to: 180
+                first.value: 1
+                second.value: 180
+                enabled: false
+                stepSize : 1
+
+                first.onMoved: {
+                    camProvider.setLowerValue(rangeSlider.first.value)
+                    slider1.text = qsTr(rangeSlider.first.value.toFixed(0).toString())
+                }
+                second.onMoved: {
+                    camProvider.setUpperValue(rangeSlider.second.value)
+                    slider2.text = qsTr(rangeSlider.second.value.toFixed(0).toString())
+                }
+
+            }
+
+            Text {
+                id: slider2
+                color: "white"
+                text: qsTr("180")
             }
         }
+
+
+
     }
    
     Connections{

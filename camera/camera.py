@@ -42,13 +42,16 @@ class CamProvider(QQuickImageProvider):
     def stop(self):
         self.cam.cap.release()
         self.cam.stop()      
-        print("Finishing...")  
+        print("Finishing...")
     
-    @Slot(int)
-    def bw(self, position):
-        if position == 1:
-            self.cam.black_and_white = True;
-        else:
-            self.cam.black_and_white = False; 
+    @Slot(float)
+    def setLowerValue(self, value):
+        self.cam.lower = int(value-1);
+
+    @Slot(float)
+    def setUpperValue(self, value):
+        self.cam.upper = int(value-1);
+
+
   
 

@@ -1,11 +1,13 @@
 import cv2
 from PySide6.QtGui import QImage
 from PySide6.QtCore import Signal, QThread
+from camera.functions import colorSelection
 
 class CameraThread(QThread):
 
     updateFrame = Signal(QImage)
-    black_and_white = False
+    lower = 0
+    upper = 179
     
     def __init__(self, parent=None):
         QThread.__init__(self, parent)
@@ -16,10 +18,9 @@ class CameraThread(QThread):
             ret, frame = self.cap.read()
             if not ret:
                 pass
-            if self.black_and_white == False:
-                color_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            else:
-                color_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            color_frame = colorSelection(frame, self.lower, self.upper)
+            #color_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            #color_frame = cv2.inRange(color_frame, (self.lower,0,0), (self.upper,255,255))
 
             qformat = QImage.Format_Indexed8
             if len(color_frame.shape) == 3:  
